@@ -24,10 +24,32 @@ enum Command {
 }
 
 mod my_module {
+    use std::process::CommandArgs;
+
     use super::Command;
 
     // TODO: Complete the function.
-    // pub fn transformer(input: ???) -> ??? { ??? }
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
+        let mut resultat = Vec::new();
+        for task in input {
+            match task.1 {
+                Command::Uppercase => {
+                    resultat.push(task.0.to_uppercase());
+                },
+                Command::Trim => {
+                    resultat.push(task.0.trim().to_string());
+                },
+                Command::Append(more) => {
+                    let mut e = task.0;
+                    for _ in 0..more {
+                        e.push_str("bar");
+                    }
+                    resultat.push(e);
+                }
+            }
+        }
+        resultat
+    }
 }
 
 fn main() {
@@ -37,7 +59,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
-    // use ???;
+    use super::my_module::transformer;
     use super::Command;
 
     #[test]
